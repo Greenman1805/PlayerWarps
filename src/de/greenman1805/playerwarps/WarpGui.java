@@ -16,6 +16,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class WarpGui implements Listener {
 
 	public static void open(Player p, int page) {
+		
+		
+warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
+
+		
+		
 		Inventory inv = Bukkit.createInventory(null, 54, "§9Warps Seite:§f " + page);
 
 		int start = 45 * (page - 1);

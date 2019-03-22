@@ -35,8 +35,6 @@ public class Main extends JavaPlugin {
 
 		MaterialBlacklist.add(Material.LAVA);
 		MaterialBlacklist.add(Material.WATER);
-		MaterialBlacklist.add(Material.STATIONARY_LAVA);
-		MaterialBlacklist.add(Material.STATIONARY_WATER);
 	}
 
 	@Override
