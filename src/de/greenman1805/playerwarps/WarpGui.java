@@ -14,15 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class WarpGui implements Listener {
+	Inventory inv;
+	int page;
 
-	public static void open(Player p, int page) {
-		
-		
-warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
-
-		
-		
-		Inventory inv = Bukkit.createInventory(null, 54, "§9Warps Seite:§f " + page);
+	public WarpGui(int page) {
+		this.page = page;
+		inv = Bukkit.createInventory(null, 54, "§9Warps Seite:§f " + page);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Main.plugin);
 
 		int start = 45 * (page - 1);
 		int end = 45 * page;
@@ -38,14 +36,14 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 			k++;
 		}
 
-		ItemStack gap = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+		ItemStack gap = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
 		setItemName(gap, "§f", null);
 		for (int i = 45; i < 54; i++) {
 			inv.setItem(i, gap);
 		}
 
 		ItemStack bookHelp = new ItemStack(Material.WRITTEN_BOOK);
-		setItemName(bookHelp, "§aSpielerWarp Befehle", null);
+		setItemName(bookHelp, "§aBefehle", null);
 		inv.setItem(49, bookHelp);
 
 		if (doesPageExist(page + 1)) {
@@ -55,7 +53,10 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 		if (doesPageExist(page - 1)) {
 			inv.setItem(45, getLeftArrow(page));
 		}
+	}
 
+
+	public void openToPlayer(Player p) {
 		p.openInventory(inv);
 	}
 
@@ -63,11 +64,8 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 	public void clickedOnItem(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
 		if (e.getClickedInventory() != null) {
-			String title = e.getInventory().getTitle();
-
-			if (title.contains("§9Warps Seite:")) {
+			if (e.getInventory().equals(inv)) {
 				if (e.getRawSlot() >= 0 && e.getRawSlot() <= 53) {
-					int page = Integer.parseInt(title.split(" ")[2]);
 
 					if (e.getCurrentItem().getType() != Material.AIR) {
 						if (e.isLeftClick()) {
@@ -81,7 +79,8 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 									p.sendMessage(Main.prefix + "§4Dieser Warp Punkt ist nicht sicher!");
 									for (Player player : Bukkit.getOnlinePlayers()) {
 										if (player.hasPermission("playerwarps.admin")) {
-											player.sendMessage(Main.prefix + "§4Warp §r" + w.warpid + " §4ist nicht sicher! Bitte prüfen!");
+											player.sendMessage(Main.prefix + "§4Warp §r" + w.warpid
+													+ " §4ist nicht sicher! Bitte prüfen!");
 										}
 									}
 								}
@@ -91,7 +90,8 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 							if (e.getSlot() == 53) {
 								if (doesPageExist(page + 1)) {
 									e.setCancelled(true);
-									open(p, page + 1);
+									WarpGui wg = new WarpGui(page + 1);
+									wg.openToPlayer(p);
 									return;
 								}
 							}
@@ -99,7 +99,8 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 							if (e.getSlot() == 45) {
 								if (doesPageExist(page - 1)) {
 									e.setCancelled(true);
-									open(p, page - 1);
+									WarpGui wg = new WarpGui(page - 1);
+									wg.openToPlayer(p);
 									return;
 								}
 							}
@@ -137,7 +138,7 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 	@SuppressWarnings("deprecation")
 	public static ItemStack getRightArrow(int page) {
 		page += 1;
-		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
 		SkullMeta skull = (SkullMeta) head.getItemMeta();
 		skull.setDisplayName("§9Seite " + page);
 		skull.setOwner("MHF_ArrowRight");
@@ -148,7 +149,7 @@ warpgui als objekt dann abspeichern und nur aktualisiern wenn changes kommen!
 	@SuppressWarnings("deprecation")
 	public static ItemStack getLeftArrow(int page) {
 		page -= 1;
-		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
 		SkullMeta skull = (SkullMeta) head.getItemMeta();
 		skull.setDisplayName("§9Seite " + page);
 		skull.setOwner("MHF_ArrowLeft");

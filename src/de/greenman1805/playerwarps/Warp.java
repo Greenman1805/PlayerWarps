@@ -41,7 +41,7 @@ public class Warp {
 
 	private void createHead() {
 		String playername = Bukkit.getOfflinePlayer(uuid).getName();
-		head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		head = new ItemStack(Material.PLAYER_HEAD, 1);
 		SkullMeta skull = (SkullMeta) head.getItemMeta();
 		skull.setDisplayName("§a" + playername);
 		ArrayList<String> lore = new ArrayList<String>();

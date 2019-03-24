@@ -2,13 +2,11 @@ name: PlayerWarps
 version: 1.0
 author: Greenman1805
 main: de.greenman1805.playerwarps.Main
-
+api-version: 1.13
 commands:
   pwarp:
     description: PlayerWarps Befehle
     aliases: [pw]
-    
-    
 permissions:
   playerwarps.admin:
     default: op    

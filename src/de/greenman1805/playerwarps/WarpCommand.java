@@ -19,16 +19,19 @@ public class WarpCommand implements CommandExecutor {
 			}
 
 			Player p = (Player) sender;
-			
+
 			if (args.length == 0) {
-				sender.sendMessage("§7- §9/pwarp buy <beschreibung> §7- §rErstellt einen Warp mit Beschreibung für " + Main.moneyPerWarp + " Shards.");
+				sender.sendMessage("§7- §9/pwarp buy <beschreibung> §7- §rErstellt einen Warp mit Beschreibung für "
+						+ Main.moneyPerWarp + " Shards.");
 				sender.sendMessage("§7- §9/pwarp list §7- §rListet deine Warps auf.");
-				sender.sendMessage("§7- §9/pwarp delete <id> §7- §rLöscht deinen Warp, du bekommst den Preis erstattet.");
+				sender.sendMessage(
+						"§7- §9/pwarp delete <id> §7- §rLöscht deinen Warp, du bekommst den Preis erstattet.");
 			}
 
 			if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("gui")) {
-					WarpGui.open(p, 1);
+					WarpGui wg = new WarpGui(1);
+					wg.openToPlayer(p);
 				}
 
 				if (args[0].equalsIgnoreCase("list")) {
@@ -38,7 +41,7 @@ public class WarpCommand implements CommandExecutor {
 						p.sendMessage("§7- §9ID: §f" + w.warpid + " §9Beschreibung: §f" + w.description);
 					}
 				}
-				
+
 				if (args[0].equalsIgnoreCase("buy")) {
 					p.sendMessage(Main.prefix + "§f/pwarp buy <beschreibung>.");
 				}
@@ -59,7 +62,8 @@ public class WarpCommand implements CommandExecutor {
 							if (p.hasPermission("playerwarps.admin")) {
 								p.sendMessage(Main.prefix + "§aWarp entfernt.");
 							} else {
-								p.sendMessage(Main.prefix + "§aWarp entfernt und " + Main.moneyPerWarp + " Shards erstattet.");
+								p.sendMessage(Main.prefix + "§aWarp entfernt und " + Main.moneyPerWarp
+										+ " Shards erstattet.");
 								Main.econ.depositPlayer(p, Main.moneyPerWarp);
 							}
 							return true;
@@ -86,7 +90,8 @@ public class WarpCommand implements CommandExecutor {
 								desc.substring(0, desc.length() - 1);
 
 								new Warp(p.getUniqueId(), loc, desc);
-								p.sendMessage(Main.prefix + "§aWarp erstellt und " + Main.moneyPerWarp + " Shards von deinem Konto entfernt.");
+								p.sendMessage(Main.prefix + "§aWarp erstellt und " + Main.moneyPerWarp
+										+ " Shards von deinem Konto entfernt.");
 							} else {
 								p.sendMessage(Main.prefix + "§4Du hast nicht genug Geld!");
 							}

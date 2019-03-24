@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin {
+	public static Main plugin;
 	public static Economy econ = null;
 	public static List<Material> MaterialBlacklist = new ArrayList<Material>();
 	public static YamlConfiguration data;
@@ -25,13 +26,13 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		plugin = this;
 		if (!setupEconomy()) {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		checkFiles();
 		registerCommands("pwarp", new WarpCommand());
-		getServer().getPluginManager().registerEvents(new WarpGui(), this);
 
 		MaterialBlacklist.add(Material.LAVA);
 		MaterialBlacklist.add(Material.WATER);
